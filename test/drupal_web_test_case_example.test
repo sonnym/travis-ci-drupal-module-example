@@ -1,0 +1,13 @@
+<?php
+class TravisDrupalModuleExampleDrupalWebTestCase extends DrupalWebTestCase {
+  public static function getInfo() {
+    return array(
+      'name' => 'Example Drupal Web Test Case',
+      'group' => 'Travis-CI Drupal Module Example',
+    );
+  }
+
+  public function testAssertTrue() {
+    $this->assert(true);
+  }
+}
