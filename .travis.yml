@@ -17,13 +17,21 @@ before_script:
   - pear install drush/drush-5.8.0
   - phpenv rehash
 
+  # install php packages required for running a web server from drush on php 5.3
+  - sudo apt-get update > /dev/null
+  - sudo apt-get install -y --force-yes php5-cgi
+
   # create new site, stubbing sendmail path with true to prevent delivery errors and manually resolving drush path
   - mysql -e 'create database travis_ci_drupal_module_example_test'
   - php -d sendmail_path=`which true` `pear config-get php_dir`/drush/drush.php --yes core-quick-drupal --profile=testing --no-server --db-url=mysql://root:@127.0.0.1/travis_ci_drupal_module_example_test --enable=simpletest travis_ci_drupal_module_example_test
+
+  # start a web server on port 8080 to run in the background, wait for initialization
+  - drush runserver 127.0.0.1:8080 &
+  - sleep 4
 
   # reference and enable travis_ci_drupal_module_example in build site
   - ln -s $(readlink -e $(cd -)) travis_ci_drupal_module_example_test/drupal/sites/all/modules/travis_ci_drupal_module_example
   - cd travis_ci_drupal_module_example_test/drupal
   - drush --yes pm-enable travis_ci_drupal_module_example
 
-script: drush test-run 'Travis-CI Drupal Module Example'
+script: drush test-run 'Travis-CI Drupal Module Example' --uri=http://127.0.0.1:8080
