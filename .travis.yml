@@ -32,6 +32,6 @@ before_script:
 
   # start a web server on port 8080, run in the background; wait for initialization
   - drush runserver 127.0.0.1:8080 &
-  - sleep 4
+  - until netstat -an 2>/dev/null | grep '8080.*LISTEN'; do true; done
 
 script: drush test-run 'Travis-CI Drupal Module Example' --uri=http://127.0.0.1:8080
