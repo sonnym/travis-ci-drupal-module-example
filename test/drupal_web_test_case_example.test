@@ -10,4 +10,8 @@ class TravisDrupalModuleExampleDrupalWebTestCase extends DrupalWebTestCase {
   public function testAssertTrue() {
     $this->assert(true);
   }
+
+  public function testDrupalGet() {
+    $this->drupalGet('node');
+  }
 }
