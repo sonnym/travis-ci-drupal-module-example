@@ -32,6 +32,10 @@ install:
   - composer global require drush/drush:6.*
 
 before_script:
+  # install http server for work command "drush runserver".
+  - git clone git://github.com/youngj/httpserver.git
+  - mv httpserver /home/travis/.composer/vendor/drush/drush/lib
+
   # navigate out of module directory to prevent blown stack by recursive module lookup
   - cd ../..
 
