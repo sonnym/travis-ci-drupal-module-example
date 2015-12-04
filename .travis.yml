@@ -24,9 +24,6 @@ addons:
     - php5-cgi
     - php5-mysql
 
-before_install:
-  - sudo apt-get update > /dev/null
-
 install:
 
   # add composer's global bin directory to the path
