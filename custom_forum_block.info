@@ -1,7 +1,0 @@
-name = Forum Blocks on Role
-description = Blocks to show to different user roles
-core = 7.x
-package = "custom"
-
-files[] = test/drupal_unit_test_case_example.test
-files[] = test/drupal_web_test_case_example.test

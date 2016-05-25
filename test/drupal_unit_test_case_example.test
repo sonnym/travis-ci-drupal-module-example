@@ -12,19 +12,19 @@ class TravisDrupalModuleExampleDrupalUnitTestCase extends DrupalUnitTestCase {
   }
   public function testEmptyMySQLDate() {
  
-  $result = custom_forum_block_empty_mysql_date(NULL);
+  $result = travis_ci_drupal_module_example_empty_mysql_date(NULL);
   $message = t('A NULL value should return TRUE.');
   $this->assertTrue($result, $message);
  
-  $result = custom_forum_block_empty_mysql_date('');
+  $result = travis_ci_drupal_module_example_empty_mysql_date('');
   $message = t('An empty string should return TRUE.');
   $this->assertTrue($result, $message);
  
-  $result = custom_forum_block_empty_mysql_date('0000-00-00');
+  $result = travis_ci_drupal_module_example_empty_mysql_date('0000-00-00');
   $message = t('An "empty" MySQL DATE should return TRUE.');
   $this->assertTrue($result, $message);
  
-  $result = custom_forum_block_empty_mysql_date(date('Y-m-d'));
+  $result = travis_ci_drupal_module_example_empty_mysql_date(date('Y-m-d'));
   $message = t('A valid date should return FALSE.');
   $this->assertFalse($result, $message);
  
