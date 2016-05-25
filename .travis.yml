@@ -32,15 +32,15 @@ before_script:
   # navigate out of module directory to prevent blown stack by recursive module lookup
   - cd ../..
   - drush dl drupal --drupal-project-rename=drupal
-  - ln -s travis-ci-drupal-module-example drupal/sites/all/modules/travis_ci_drupal_module_example
+  - ln -s bober2000/travis-ci-drupal-module-example drupal/sites/all/modules/travis_ci_drupal_module_example
   # create new site, stubbing sendmail path with true to prevent delivery errors and manually resolving drush path
   - mysql -e 'create database travis_ci_drupal_module_example_test'
   - cd drupal
   - drush --verbose site-install --db-url=mysql://root:@127.0.0.1/travis_ci_drupal_module_example_test --yes
-#  - php -d sendmail_path=`which true` ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --profile=testing --no-server --db-url=mysql://root:@127.0.0.1/travis_ci_drupal_module_example_test --enable=simpletest travis_ci_drupal_module_example_test
 
   # reference and enable travis_ci_drupal_module_example in build site
   - drush --yes pm-enable travis_ci_drupal_module_example
+  - drush --yes pm-enable simpletest
 
   # start a web server on port 8080, run in the background; wait for initialization
   - drush runserver 127.0.0.1:8080 &
