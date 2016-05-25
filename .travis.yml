@@ -32,7 +32,8 @@ before_script:
   # navigate out of module directory to prevent blown stack by recursive module lookup
   - cd ../..
   - drush dl drupal --drupal-project-rename=drupal
-  - ln -s bober2000/travis-ci-drupal-module-example drupal/sites/all/modules/travis_ci_drupal_module_example
+  - ls -la
+#  - ln -s bober2000/travis-ci-drupal-module-example drupal/sites/all/modules/travis_ci_drupal_module_example
   # create new site, stubbing sendmail path with true to prevent delivery errors and manually resolving drush path
   - mysql -e 'create database travis_ci_drupal_module_example_test'
   - cd drupal
