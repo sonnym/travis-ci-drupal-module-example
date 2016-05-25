@@ -110,3 +110,9 @@ function custom_forum_block_get_listofforums() {
     );
   return $items_list;
 }
+function custom_forum_block_empty_mysql_date($date_string) {
+  if (empty($date_string) || $date_string == '0000-00-00' || $date_string == '0000-00-00 00:00:00') {
+    return true;
+  }
+  return false;
+}
