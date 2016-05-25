@@ -1,0 +1,112 @@
+<?php
+/**
+ * @file
+ * Generate block with list of forums on forums page and on user profile page.
+ */
+
+function custom_forum_block_block_info() {
+  $blocks['forums-custom-list'] = array(
+    'info' => t('Forum block on user profile page'),
+  );
+  $blocks['forums-custom-list-forum-page'] = array(
+    'info' => t('Forum block on forum page'),
+  );
+  return $blocks;
+}
+
+function custom_forum_block_block_list_alter(&$blocks) {
+  foreach ($blocks as $bid => $block) {
+    if ($block->delta == 'forums-custom-list') {
+      global $user;
+      if (in_array('groom', $user->roles) ||  in_array('bride', $user->roles)) {
+        $user = user_load($user -> uid);
+        $wedding_date = field_get_items('user', $user, 'field_wedding_date');
+        if ($wedding_date) {
+          $wedding_date = reset($wedding_date);
+          $wedding_date = $wedding_date['value'];
+          $current_date = time();
+          if ($current_date < $wedding_date) {
+            unset($blocks[$bid]);
+          }
+        }
+        else {
+          unset($blocks[$bid]);
+        }
+      }
+      else {
+        unset($blocks[$bid]);
+      }
+    }
+  }
+}
+function custom_forum_block_block_view($delta = '') {
+  switch ($delta) {
+    case  'forums-custom-list-forum-page':
+    case  'forums-custom-list':
+      $subject = ($delta == 'forums-custom-list-forum-page' ? 'Forums custom list on forum page' : 'Forums custom list');
+      $block['subject']=t($subject);
+      $block['content']=custom_forum_block_get_listofforums();
+      break;
+  }
+  return $block;
+}
+
+function custom_forum_block_get_listofforums() {
+  $list = forum_forum_load();
+  foreach ($list->forums as $key => $forum) {
+    if (isset($forum->container)) {
+      $menu_forum_link=array(
+         '#theme' => 'link',
+         '#text' => $forum->name,
+         '#options' => array(
+            'attributes' => array(),
+            'html' => FALSE,
+            'absolute' => TRUE,
+          ),
+      );
+      if (isset($forum->link)) {
+        $menu_forum_link['#path']=trim($forum->link, '/');
+      }
+      else {
+        $menu_forum_link['#path']=drupal_get_path_alias('forum/' . $forum->tid);
+      }
+      $parents[$key]['data'] = render($menu_forum_link);
+      $parents[$key]['class'] = array('level-1');
+    }
+  }
+  $top = array_keys($parents);
+  foreach ($list->forums as $key => $forum) {
+    if (in_array($forum->parents[0], $top)) {
+      $menu_forum_link = array(
+         '#theme' => 'link',
+         '#text' => $forum->name,
+         '#options' => array(
+            'attributes' => array(),
+            'html' => FALSE,
+            'absolute' => TRUE,
+          ),
+      );
+      if (isset($forum->link)) {
+        $menu_forum_link['#path']=trim($forum->link, '/');
+      }
+      else {
+        $menu_forum_link['#path']=drupal_get_path_alias('forum/' . $forum->tid);
+      }
+      $parents[$forum->parents[0]]['children'][]['data']=render($menu_forum_link);
+      $key_l2=array_keys($parents[$forum->parents[0]]['children']);
+      $last_key = end($key_l2);
+      $parents[$forum->parents[0]]['children'][$last_key]['class']=array('level-2');
+    }
+  }
+    $attributes = array(
+      'id' => 'my-custom-listing',
+      'class' => 'custom-class another-custom-class', // a string or indexed (string) array with the classes for the list tag
+    );
+    $items_list = array(
+      '#theme' => 'item_list',
+      '#items' => $parents,
+      '#type' => 'ul',
+      '#attributes' => $attributes,
+    );
+  return $items_list;
+}
