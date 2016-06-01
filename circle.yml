@@ -3,7 +3,7 @@ machine:
     version: 5.6.18
 dependencies:
   pre:
-    - composer global require drush/drush:8.*
+    - sudo composer global require drush/drush:8.*
     - drush dl drupal-7 --drupal-project-rename=drupal
     - mysql -u root -e 'create database travis_ci_drupal_module_example_test;'
     - mv drupal ..
