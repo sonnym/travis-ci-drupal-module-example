@@ -3,6 +3,7 @@ machine:
     version: 5.6.18
 dependencies:
   pre:
+    - export PATH="$HOME/.composer/vendor/bin:$PATH"
     - composer global require drush/drush:8.*
     - mysql -u root -e 'create database travis_ci_drupal_module_example_test;'
     - cd ..
