@@ -10,6 +10,3 @@ dependencies:
     - cd drupal
     - drush --verbose site-install --db-url=mysql://root:@127.0.0.1/travis_ci_drupal_module_example_test --yes
     - drush --yes pm-enable simpletest
-test:
-
-
