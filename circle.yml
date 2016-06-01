@@ -1,0 +1,20 @@
+machine:
+  pre:
+    - sudo apt-get install -y --force-yes php5-cgi php5-mysql
+  php:
+    version: 7.0.4
+    version: 5.6.17
+dependencies:
+  pre:
+    - composer global require drush/drush:8.*
+    - "mysql -u root -e 'create database travis_ci_drupal_module_example_test;'"
+    - cd ~
+    - drush dl drupal --drupal-project-rename=drupal
+    - mv bober2000/travis-ci-drupal-module-example drupal/sites/all/modules/travis_ci_drupal_module_example
+    - cd drupal
+    - drush --verbose site-install --db-url=mysql://root:@127.0.0.1/travis_ci_drupal_module_example_test --yes
+    - drush --yes pm-enable travis_ci_drupal_module_example
+    - drush --yes pm-enable simpletest
+
+
+

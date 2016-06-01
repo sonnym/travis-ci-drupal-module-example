@@ -26,7 +26,7 @@ install:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
 
   # install drush globally
-  - composer global require drush/drush:6.*
+  - composer global require drush/drush:8.*
 
 before_script:
   # navigate out of module directory to prevent blown stack by recursive module lookup
