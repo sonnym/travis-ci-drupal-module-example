@@ -6,7 +6,6 @@ dependencies:
     - export PATH="$HOME/.composer/vendor/bin:$PATH"
     - composer global require drush/drush:8.*
     - mysql -u root -e 'create database travis_ci_drupal_module_example_test;'
-    - cd ..
     - drush dl drupal-7 --drupal-project-rename=drupal
     - cd drupal
     - mv travis-ci-drupal-module-example drupal /sites/all/modules/travis_ci_drupal_module_example
