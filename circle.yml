@@ -1,8 +1,6 @@
 machine:
   php:
     version: 5.6.18
-general:
-  build_dir: travis_ci_drupal_module_example_test
 
 dependencies:
   pre:
