@@ -11,7 +11,7 @@ dependencies:
     - sudo composer global require drush/drush:8.*
     - drush dl drupal-7 --drupal-project-rename=drupal
     - mysql -u root -e 'create database travis_ci_drupal_module_example_test;'
-    - ln -s travis_ci_drupal_module_example drupal/sites/all/modules/travis_ci_drupal_module_example
+    - mv travis_ci_drupal_module_example drupal/sites/all/modules/travis_ci_drupal_module_example
     - drush -r drupal --verbose site-install --db-url=mysql://root:@127.0.0.1/travis_ci_drupal_module_example_test --yes
     - drush -r drupal --yes pm-enable simpletest
     - drush -r drupal --yes pm-enable travis_ci_drupal_module_example
