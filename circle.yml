@@ -18,6 +18,5 @@ dependencies:
 test:
   pre:
     - drush runserver 127.0.0.1:8080 &
-    - until netstat -an 2>/dev/null | grep '8080.*LISTEN'; do true; done
   override:
     - php scripts/run-tests.sh --php "/usr/bin/php" --verbose --color --url http://http://127.0.0.1:8080 --class "TravisDrupalModuleExampleDrupalUnitTestCase"
