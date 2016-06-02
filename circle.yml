@@ -4,7 +4,7 @@ machine:
 checkout:
   post:
     - mkdir travis_ci_drupal_module_example
-    - mv * travis_ci_drupal_module_example
+    - cp * travis_ci_drupal_module_example
 dependencies:
   pre:
     - sudo composer global require drush/drush:8.*
