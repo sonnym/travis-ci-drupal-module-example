@@ -1,5 +1,5 @@
 deploy:
-  production:
+  zenci:
     server: ocean.vps-private.net
     username: mv
     dir: '{home}/github/drupal/{branch}'
