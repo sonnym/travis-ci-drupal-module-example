@@ -1,9 +1,6 @@
 language: php
 
 php:
-  - 5.3
-  - 5.4
-  - 5.5
   - 5.6
   - hhvm
 
@@ -29,23 +26,27 @@ install:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
 
   # install drush globally
-  - composer global require drush/drush:6.*
+  - composer global require drush/drush:8.*
 
 before_script:
   # navigate out of module directory to prevent blown stack by recursive module lookup
   - cd ../..
-
+  - drush dl drupal-7 --drupal-project-rename=drupal
+  - mv bober2000/travis-ci-drupal-module-example drupal/sites/all/modules/travis_ci_drupal_module_example
   # create new site, stubbing sendmail path with true to prevent delivery errors and manually resolving drush path
   - mysql -e 'create database travis_ci_drupal_module_example_test'
-  - php -d sendmail_path=`which true` ~/.composer/vendor/bin/drush.php --yes core-quick-drupal --profile=testing --no-server --db-url=mysql://root:@127.0.0.1/travis_ci_drupal_module_example_test --enable=simpletest travis_ci_drupal_module_example_test
+  - cd drupal
+  - drush --verbose site-install --db-url=mysql://root:@127.0.0.1/travis_ci_drupal_module_example_test --yes
 
   # reference and enable travis_ci_drupal_module_example in build site
-  - ln -s $(readlink -e $(cd -)) travis_ci_drupal_module_example_test/drupal/sites/all/modules/travis_ci_drupal_module_example
-  - cd travis_ci_drupal_module_example_test/drupal
   - drush --yes pm-enable travis_ci_drupal_module_example
+  - drush --yes pm-enable simpletest
 
   # start a web server on port 8080, run in the background; wait for initialization
   - drush runserver 127.0.0.1:8080 &
   - until netstat -an 2>/dev/null | grep '8080.*LISTEN'; do true; done
 
-script: drush test-run 'Travis-CI Drupal Module Example' --uri=http://127.0.0.1:8080
+script:
+  - php scripts/run-tests.sh --php "/usr/bin/php" --verbose --color --url http://http://127.0.0.1:8080 --class "TravisDrupalModuleExampleDrupalUnitTestCase"
+
+

@@ -1,0 +1,14 @@
+deploy:
+  zenci:
+    server: ocean.vps-private.net
+    username: mv
+    dir: '{home}/github/drupal/{branch}'
+    env_vars:
+      docroot: '{home}/domains/test.mv.ocean.vps-private.net'
+      domain: 	test.mv.ocean.vps-private.net
+      sitename: testsite
+      sitemail: noreply@test.mv.ocean.vps-private.net
+      database_name: mv_test
+      database_user: mv_test
+    scripts:
+      init: '{deploy_dir}/scripts/install.sh'

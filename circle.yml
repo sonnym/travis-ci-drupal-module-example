@@ -1,0 +1,25 @@
+machine:
+  php:
+    version: 5.6.18
+  pre:
+    - sudo apt-get update > /dev/null
+    - sudo apt-get install -y --force-yes php5-mysql
+checkout:
+  post:
+    - mkdir ../travis_ci_drupal_module_example
+    - cp -a * ../travis_ci_drupal_module_example
+    - mv ../travis_ci_drupal_module_example .
+dependencies:
+  pre:
+    - sudo composer global require drush/drush:8.*
+    - drush dl drupal-7 --drupal-project-rename=drupal
+    - mysql -u root -e 'create database travis_ci_drupal_module_example_test;'
+    - mv travis_ci_drupal_module_example drupal/sites/all/modules/travis_ci_drupal_module_example
+    - drush -r drupal --verbose site-install --db-url=mysql://root:@127.0.0.1/travis_ci_drupal_module_example_test --yes
+    - drush -r drupal --yes pm-enable simpletest
+    - drush -r drupal --yes pm-enable travis_ci_drupal_module_example
+test:
+  pre:
+    - drush runserver 127.0.0.1:8080 &
+  override:
+    - php drupal/scripts/run-tests.sh --php "/usr/bin/php" --verbose --color --url http://http://127.0.0.1:8080 --class "TravisDrupalModuleExampleDrupalUnitTestCase"
