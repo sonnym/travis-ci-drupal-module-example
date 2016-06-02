@@ -15,4 +15,9 @@ dependencies:
     - drush -r drupal --verbose site-install --db-url=mysql://root:@127.0.0.1/travis_ci_drupal_module_example_test --yes
     - drush -r drupal --yes pm-enable simpletest
     - drush -r drupal --yes pm-enable travis_ci_drupal_module_example
-
+test:
+  pre:
+    - drush runserver 127.0.0.1:8080 &
+    - until netstat -an 2>/dev/null | grep '8080.*LISTEN'; do true; done
+  override:
+    - php scripts/run-tests.sh --php "/usr/bin/php" --verbose --color --url http://http://127.0.0.1:8080 --class "TravisDrupalModuleExampleDrupalUnitTestCase"
