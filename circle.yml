@@ -19,4 +19,4 @@ test:
   pre:
     - drush runserver 127.0.0.1:8080 &
   override:
-    - php scripts/run-tests.sh --php "/usr/bin/php" --verbose --color --url http://http://127.0.0.1:8080 --class "TravisDrupalModuleExampleDrupalUnitTestCase"
+    - php drupal/scripts/run-tests.sh --php "/usr/bin/php" --verbose --color --url http://http://127.0.0.1:8080 --class "TravisDrupalModuleExampleDrupalUnitTestCase"
