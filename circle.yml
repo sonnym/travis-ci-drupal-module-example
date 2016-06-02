@@ -1,6 +1,9 @@
 machine:
   php:
     version: 5.6.18
+  pre:
+    - sudo apt-get update > /dev/null
+    - sudo apt-get install -y --force-yes php5-mysql
 checkout:
   post:
     - mkdir ../travis_ci_drupal_module_example
